@@ -25,7 +25,7 @@ def load_config():
     PUBLIC_KEY = config.get('Hub Data', 'public_key')
     # Load connection values
     global URL
-    URL = ('http://' + config.get('Connection Values', 'ip_addresss')
+    URL = ('http://' + config.get('Connection Values', 'ip_address')
         + ':' + config.get('Connection Values', 'port') + '/hub_data')
     #Load settings
     global INTERVAL
