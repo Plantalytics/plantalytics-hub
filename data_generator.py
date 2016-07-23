@@ -5,11 +5,12 @@
 #     Please see the file LICENSE in this distribution for license terms.
 # Contact: plantalytics.capstone@gmail.com
 
+import ConfigParser
 import json
 import random
+import requests
 import sys
 import time
-import ConfigParser
 
 # Read values from 
 def load_config():
@@ -23,14 +24,9 @@ def load_config():
     global PUBLIC_KEY
     PUBLIC_KEY = config.get('Hub Data', 'public_key')
     # Load connection values
-    global USERNAME
-    USERNAME = config.get('Connection Values', 'username')
-    global PASSWORD
-    PASSWORD = config.get('Connection Values', 'password')
-    global IP_ADDRESS
-    IP_ADDRESS = config.get('Connection Values', 'ip_address')
-    global KEYSPACE
-    KEYSPACE = config.get('Connection Values', 'keyspace')
+    global URL
+    URL = ('http://' + config.get('Connection Values', 'ip_addresss')
+        + ':' + config.get('Connection Values', 'port') + '/hub_data')
     #Load settings
     global INTERVAL
     INTERVAL = config.getint('Settings', 'interval')
@@ -98,7 +94,7 @@ def main():
         i += 1
         # Generates CQL batch insertion string for each node
         batch = create_json(header, nodes)
-        # TODO: Push batch to back end
+        r = requests.post(URL, data=json.dumps(batch))
         bedtime()
     # If, for some reason, the loop exits, shutdown the connection.
     session.shutdown()
