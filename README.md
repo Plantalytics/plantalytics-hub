@@ -15,7 +15,7 @@ Then:
   * `opkg install python-pip`
   * `wget https://bootstrap.pypa.io/ez_setup.py --no-check-certificate`
   * `python ez_setup.py`
-  * `pip install cassandra-driver`
+  * `pip install requests`
 * Install Git:
   * `opkg install git`
 * Clone repository
