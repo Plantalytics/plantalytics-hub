@@ -19,7 +19,7 @@ output_file.close()
 
 # Open the new file and count the number of lines acquired from the data stream file
 output_file = open(OUT_FILE_NAME, "r")
-line_count = sum(1 for line in output_file)
+line_count = sum(1 for line in output_file)                                             # NEED TO CLOSE FILE HERE IF PARSER USES 'WITH' STATEMENT
 
 # If no data was gathered, do nothing
 if line_count == 0:
@@ -33,5 +33,5 @@ call(command, shell=True)
 
 
 # Send data to Cassandra
-while requests.put(BACKEND_IP_ADDRESS, data).status_code != 200:
+while requests.put(BACKEND_IP_ADDRESS + ENV_VAR_ENDPOINT, data).status_code != 200:
     pass
