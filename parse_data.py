@@ -1,4 +1,4 @@
-import configparser
+import ConfigParser
 import json
 import requests
 import subprocess
@@ -7,7 +7,7 @@ import time
 
 # Read values from
 def load_config():
-    config = configparser.RawConfigParser()
+    config = ConfigParser.RawConfigParser()
     config.read('hub_secret.config')
 
     # Load hub data
@@ -127,7 +127,9 @@ def main():
     load_config()
     copy_lines()
     delete_lines(count_lines())
-    send_data(create_json(get_header(), OUT_FILE_NAME))
+    dumps = create_json(get_header(), OUT_FILE_NAME)
+    print(dumps)
+    send_data(dumps)
 
 if __name__ == "__main__":
     main()
