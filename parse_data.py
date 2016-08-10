@@ -1,8 +1,7 @@
-from subprocess import call
-
 import configparser
 import json
 import requests
+import subprocess
 import time
 
 
@@ -70,7 +69,7 @@ def count_lines():
 def delete_lines(line_count):
     # Delete lines read from stream file using the number of lines counted above
     command = "sed --in-place " + "1," + str(line_count) + "d " + IN_FILE_NAME
-    call(command, shell=True)
+    subprocess.call(command, shell=True)
 
 
 def create_json(header, fileIn):
@@ -129,8 +128,6 @@ def main():
     copy_lines()
     delete_lines(count_lines())
     send_data(create_json(get_header(), OUT_FILE_NAME))
-    # print(batch)
-    # r = requests.post(URL, data=json.dumps(batch))
 
 if __name__ == "__main__":
     main()
