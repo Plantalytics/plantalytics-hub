@@ -94,7 +94,7 @@ def main():
         i += 1
         # Generates CQL batch insertion string for each node
         batch = create_json(header, nodes)
-        r = requests.post(URL, data=json.dumps(batch))
+        r = requests.put(URL, data=json.dumps(batch))
         bedtime()
     # If, for some reason, the loop exits, shutdown the connection.
     session.shutdown()
