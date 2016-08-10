@@ -86,7 +86,6 @@ def create_json(header, fileIn):
             readIn.read(31)
             # Read the json string
             json_string = readIn.readline()
-            print(json_string)
             timestamp = readIn.readline()
             # Remove the Endline char
             timestamp = timestamp[:-1]
