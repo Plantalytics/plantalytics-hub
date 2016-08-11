@@ -125,7 +125,7 @@ def send_data(batch):
 def main():
     load_config()
     copy_lines()
-    #delete_lines(count_lines())
+    delete_lines(count_lines())
     send_data(create_json(get_header(), OUT_FILE_NAME))
 
 if __name__ == "__main__":
