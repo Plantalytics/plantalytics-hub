@@ -12,11 +12,11 @@ def load_config():
 
     # Load hub data
     global HUB_ID
-    HUB_ID = config.get('Hub Data', 'hub_id')
+    HUB_ID = int(config.get('Hub Data', 'hub_id'))
     global VINE_ID
-    VINE_ID = config.get('Hub Data', 'vine_id')
+    VINE_ID = int(config.get('Hub Data', 'vine_id'))
     global PUBLIC_KEY
-    PUBLIC_KEY = config.get('Hub Data', 'public_key')
+    PUBLIC_KEY = str(config.get('Hub Data', 'public_key'))
     global IN_FILE_NAME
     IN_FILE_NAME = config.get('Hub Data', 'stream')
     global OUT_FILE_NAME
@@ -97,14 +97,13 @@ def create_json(header, fileIn):
                 encode_data = (parsed_json['data'])
                 data = encode_data.decode('base64')
                 data_json = json.loads(data)
-
+                
                 node_data = {}
-                node_data['node_id'] = (data_json['NODEID'])
-                node_data['temperature'] = (data_json['T'])
-                node_data['humidity'] = (data_json['H'])
-                node_data['leafwetness'] = (data_json['L'])
-                node_data['data_sent'] = timestamp
-                #        print(node_data)
+                node_data['node_id'] = int(data_json['NODEID'])
+                node_data['temperature'] = float(data_json['T'])
+                node_data['humidity'] = float(data_json['H'])
+                node_data['leafwetness'] = float(data_json['L'])
+                node_data['data_sent'] = int(float(timestamp))
                 object['hub_data'].append(node_data)
             except ValueError:
                 # If enter this block, means formatting of json data failed
@@ -126,10 +125,8 @@ def send_data(batch):
 def main():
     load_config()
     copy_lines()
-    delete_lines(count_lines())
-    dumps = create_json(get_header(), OUT_FILE_NAME)
-    print(dumps)
-    send_data(dumps)
+    #delete_lines(count_lines())
+    send_data(create_json(get_header(), OUT_FILE_NAME))
 
 if __name__ == "__main__":
     main()
