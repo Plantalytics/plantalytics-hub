@@ -56,7 +56,7 @@ def copy_lines():
 def count_lines():
     # Open the new file and count the number of lines acquired from the data stream file
     output_file = open(OUT_FILE_NAME, "r")
-    line_count = sum(1 for line in output_file)  # NEED TO CLOSE FILE HERE IF PARSER USES 'WITH' STATEMENT
+    line_count = sum(1 for line in output_file)
     output_file.close()
 
     # If no data was gathered, do nothing
