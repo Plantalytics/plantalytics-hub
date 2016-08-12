@@ -23,6 +23,28 @@ Then:
 
 After taking these steps, it is possible to download and run the softare needed to connect the node data to the database!
 
+## Cron Daemon
+
+The Cron Daemon is used to schedule scripts to run at select intervals.
+
+* The 'mosquitto' script (which reads & saves data from the nodes) is started upon system boot and runs 
+continuously:
+  * '@reboot /home/root/plantalytics-hub/mqtt.sh > /dev/null'
+
+* A checker is ran every five minutes to ensure the 'mosquitto' script is running as intended:
+  * '*/5 * * * * /home/root/plantalytics-hub/mqtt_checker.sh > /dev/null'
+
+* The Python parsing script which gathers the data retrieved from the 'mosquitto' script, parses it into a 
+JSON object, then sends it to the database (runs every five minutes):
+  * '*/5 * * * * /usr/bin/python /home/root/plantalytics-hub/parse_data.py > /dev/null'
+
+To create Cron jobs on a new Hub:
+  * # crontab -e
+  * add the lines above to the file, save & close
+  * crontab should report success
+  * add executable permissions to the relevant files, e.g.,
+  * # chmod +x /home/root/mqtt.sh
+
 ## Use
 
 data_generator.py generates random data for display on the Plantalytics dashboard. Every five minutes, a new sample is generated and uploaded to the server.
