@@ -11,14 +11,14 @@ def on_connect(client, userdata, rc):
 # The callback for when a PUBLISH message is recieved
 def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
-    myfile = open("output.txt", "a")
+    myfile = open("data_stream.txt", "a")
     myfile.write(msg.topic+" "+str(msg.payload))
     myfile.write(str(int(time.time()*1000))+'\n')
     myfile.write('\n')
     myfile.close()
 
 #clear txt file
-open("output.txt", "w").close()
+open("data_stream.txt", "w").close()
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message

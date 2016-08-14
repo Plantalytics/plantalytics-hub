@@ -79,13 +79,16 @@ def create_json(header, fileIn):
 
     with open(fileIn, 'r') as readIn:
         while True:
-            # Skipping junk
-            c = readIn.read(1)
-            if not c:
-                break
-            readIn.read(31)
+	    #Skipping junk
+	    get_string = readIn.readline()
+	    if not get_string:
+		break
+#	    print get_string
+	    json_string = get_string.partition(" ")[2]
+#            print json_string
+
             # Read the json string
-            json_string = readIn.readline()
+            #json_string = readIn.readline()
             timestamp = readIn.readline()
             # Remove the Endline char
             timestamp = timestamp[:-1]
@@ -97,10 +100,11 @@ def create_json(header, fileIn):
                 encode_data = (parsed_json['data'])
                 data = encode_data.decode('base64')
                 data_json = json.loads(data)
+		print data_json
                 
                 node_data = {}
                 node_data['node_id'] = int(data_json['NODEID'])
-                node_data['temperature'] = float(data_json['T'])
+		node_data['temperature'] = float(data_json['T'])
                 node_data['humidity'] = float(data_json['H'])
                 node_data['leafwetness'] = float(data_json['L'])
                 node_data['data_sent'] = int(float(timestamp))
@@ -108,6 +112,7 @@ def create_json(header, fileIn):
             except ValueError:
                 # If enter this block, means formatting of json data failed
                 # Don't do anything with that data
+		print "FAILED"
                 pass
             # Get ready for next data
             readIn.readline()
@@ -125,7 +130,8 @@ def send_data(batch):
 def main():
     load_config()
     copy_lines()
-    delete_lines(count_lines())
+    #delete_lines(count_lines())
+    print (create_json(get_header(), OUT_FILE_NAME))
     send_data(create_json(get_header(), OUT_FILE_NAME))
 
 if __name__ == "__main__":
