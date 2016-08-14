@@ -7,9 +7,20 @@ Scripts to enable a MultiConnect Conduit to act as a hub for the Plantalytics sy
 Setting up the Conduit is 9/10ths of the battle. The first step is to configure the network settings.
 
 Then:
-
-* Set DNS server:
-  * Add `dns-nameservers 8.8.8.8 8.8.4.4` to /etc/network/interfaces
+* Two opinions to set up Internet connection(Recommand opinon 2):
+  * 1.) Static(Add all lines into /etc/network/interfaces)
+    * Modify `address 192.168.2.1` to fit your wanted static ip-address for the conduit
+    * Modify `netmask 255.255.255.0` to match netmask of your rounter
+    * Add `gateway: ###.###.#.##` the address needs to be your rounter ip-address
+    * Add `dns-nameservers 8.8.8.8 8.8.4.4` to set DNS server
+    * Add `post-up echo "nameserver 8.8.8.8" > /etc/resolv.conf`
+    * Save and quit. In command line `ifdown eth0 && ifup eth0` to have changes take effect
+    * Ping a site to test internet connection
+  * 2.) DHCP(Edit lines into /etc/network/interfaces)
+    * Modity `iface eth0 inet static` into `iface eth0 inet dhcp`
+    * Save and quit. In command line `ifdown eth0 && ifup eth0` to have changes take effect
+    * Ping a site to test internet connection
+    * Command `ifconfig` shows the address, netmask and other networking things of the conduit
 * Set up Python based on the instructions from [Multitech](http://www.multitech.net/developer/software/mlinux/mlinux-software-development/python/), execute the following commands:
   * `opkg update`
   * `opkg install python-pip`
