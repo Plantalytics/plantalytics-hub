@@ -76,7 +76,8 @@ def create_json(header, fileIn):
     # Parse data
     object = header
     object['hub_data'] = []
-
+    dict = {}
+    node_num = 1
     with open(fileIn, 'r') as readIn:
         while True:
 	    #Skipping junk
@@ -108,7 +109,10 @@ def create_json(header, fileIn):
                 node_data['humidity'] = float(data_json['H'])
                 node_data['leafwetness'] = float(data_json['L'])
                 node_data['data_sent'] = int(float(timestamp))
-                object['hub_data'].append(node_data)
+		#dict[data_json['NODEID']] = node_data
+		dict[node_data['node_id']] = node_data		
+		print dict
+                #object['hub_data'].append(node_data)
             except ValueError:
                 # If enter this block, means formatting of json data failed
                 # Don't do anything with that data
@@ -116,7 +120,8 @@ def create_json(header, fileIn):
                 pass
             # Get ready for next data
             readIn.readline()
-
+    for key, value in dict.iteritems():
+	object['hub_data'].append(dict[key])
     object['batch_sent'] = int(time.time() * 1000)
     return object
 
@@ -132,7 +137,7 @@ def main():
     copy_lines()
     #delete_lines(count_lines())
     print (create_json(get_header(), OUT_FILE_NAME))
-    send_data(create_json(get_header(), OUT_FILE_NAME))
+    #send_data(create_json(get_header(), OUT_FILE_NAME))
 
 if __name__ == "__main__":
     main()
