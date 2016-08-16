@@ -18,7 +18,7 @@ def on_message(client, userdata, msg):
     myfile.close()
 
 #clear txt file
-open("data_stream.txt", "w").close()
+open("data_stream.txt", "a").close()
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
