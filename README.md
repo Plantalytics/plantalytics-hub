@@ -45,16 +45,16 @@ continuously:
 * A checker is ran every five minutes to ensure the 'mosquitto' script is running as intended:
   * '*/5 * * * * /home/root/plantalytics-hub/mqtt_checker.sh > /dev/null'
 
-* The Python parsing script which gathers the data retrieved from the 'mosquitto' script, parses it into a 
-JSON object, then sends it to the database (runs every five minutes):
-  * '*/5 * * * * /usr/bin/python /home/root/plantalytics-hub/parse_data.py > /dev/null'
+* The Python parsing script which gathers the data retrieved from the 'lora_client.py' 
+script, parses it into a JSON object, then sends it to the database (runs every five minutes):
+  * '*/5 * * * * /home/root/plantalytics-hub/parse_data.py > /dev/null'
 
 To create Cron jobs on a new Hub:
   * # crontab -e
   * add the lines above to the file, save & close
   * crontab should report success
   * add executable permissions to the relevant files, e.g.,
-  * # chmod +x /home/root/mqtt.sh
+  * # chmod +x /home/root/plantalitics-hub/lora_client.py
 
 ## Use
 
