@@ -67,10 +67,10 @@ The Cron Daemon is used to schedule scripts to run at select intervals.
 
 * The 'mosquitto' script (which reads & saves data from the nodes) is started upon system boot and runs 
 continuously:
-  * '@reboot /home/root/plantalytics-hub/mqtt.sh > /dev/null'
+  * '@reboot /home/root/plantalytics-hub/lora_client.py > /dev/null'
 
 * A checker is ran every five minutes to ensure the 'mosquitto' script is running as intended:
-  * '*/5 * * * * /home/root/plantalytics-hub/mqtt_checker.sh > /dev/null'
+  * '*/5 * * * * /home/root/plantalytics-hub/lora_checker.sh > /dev/null'
 
 * The Python parsing script which gathers the data retrieved from the 'lora_client.py' 
 script, parses it into a JSON object, then sends it to the database (runs every five minutes):
