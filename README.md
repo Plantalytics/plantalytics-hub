@@ -21,6 +21,20 @@ Then:
     * Save and quit. In command line `ifdown eth0 && ifup eth0` to have changes take effect
     * Ping a site to test internet connection
     * Command `ifconfig` shows the address, netmask and other networking things of the conduit
+* Set up LoRa(Assuming LoRa mCard is installed and LoRa antenna is attached.)
+  * Execute commands:
+    * `mkdir /var/config/lora`
+    * `cp /opt/lora/lora-network-server.conf.sample /var/config/lora/lora-network-server.conf`
+  * Edit the /var/config/lora/lora-network-server.conf and modify the settings as needed. But here is what we did:
+    * Change "public": false to "public": true.
+    * Comment out lines in "network". "name" and "passphrase".
+    * Add lines "eui" and "key". Make sure they match the nodes eui and key:
+	* `"eui": "XX:XX:XX:XX:XX:XX:XX:XX",`
+	* `"key": "XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX"`
+  * Restart the network server by executing:
+	* `/etc/init.d/lora-network-server restart`
+  * To start the mosquitto client:
+	* `mosquitto_sub -t lora/+/+ -v`
 * Set up Python based on the instructions from [Multitech](http://www.multitech.net/developer/software/mlinux/mlinux-software-development/python/), execute the following commands:
   * `opkg update`
   * `opkg install python-pip`

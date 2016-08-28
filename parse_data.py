@@ -84,9 +84,7 @@ def create_json(header, fileIn):
 	    get_string = readIn.readline()
 	    if not get_string:
 		break
-#	    print get_string
 	    json_string = get_string.partition(" ")[2]
-#            print json_string
 
             # Read the json string
             #json_string = readIn.readline()
@@ -101,7 +99,8 @@ def create_json(header, fileIn):
                 encode_data = (parsed_json['data'])
                 data = encode_data.decode('base64')
                 data_json = json.loads(data)
-		print data_json
+		#Uncomment line below to check data_json
+		#print data_json
                 
                 node_data = {}
                 node_data['node_id'] = int(data_json['NODEID'])
@@ -109,10 +108,9 @@ def create_json(header, fileIn):
                 node_data['humidity'] = float(data_json['H'])
                 node_data['leafwetness'] = float(data_json['L'])
                 node_data['data_sent'] = int(float(timestamp))
-		#dict[data_json['NODEID']] = node_data
 		dict[node_data['node_id']] = node_data		
-		print dict
-                #object['hub_data'].append(node_data)
+		#Uncomment line below to check dict
+		#print dict
             except ValueError:
                 # If enter this block, means formatting of json data failed
                 # Don't do anything with that data
@@ -135,9 +133,9 @@ def send_data(batch):
 def main():
     load_config()
     copy_lines()
-    #delete_lines(count_lines())
-    print (create_json(get_header(), OUT_FILE_NAME))
-    #send_data(create_json(get_header(), OUT_FILE_NAME))
+    delete_lines(count_lines())
+    #print (create_json(get_header(), OUT_FILE_NAME))
+    send_data(create_json(get_header(), OUT_FILE_NAME))
 
 if __name__ == "__main__":
     main()
