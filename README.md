@@ -33,7 +33,7 @@ Then:
     * Modity `iface eth0 inet static` into `iface eth0 inet dhcp`
     * Save and quit. In command line `ifdown eth0 && ifup eth0` to have changes take effect
     * Ping a site to test internet connection
-    * Command `ifconfig` shows the address, netmask and other networking things of the conduit
+    * Command `ifconfig` shows the address, netmask and other networking things of the conduit. This is useful for **ssh** into the hub. You may need to port forwarding for ssh access to the conduit.
 * Set up LoRa(Assuming LoRa mCard is installed and LoRa antenna is attached.)
   * Execute commands:
     * `mkdir /var/config/lora`
@@ -85,7 +85,9 @@ To create Cron jobs on a new Hub:
 
 ## Use
 
-data_generator.py generates random data for display on the Plantalytics dashboard. Every five minutes, a new sample is generated and uploaded to the server.
+lora_client.py prints data recieved from nodes into txt file with a timestamp when recieved. parse_data.py takes that data from that txt file and transfer to a new file. It then decodes, and parse it and sends it to back-end.
+
+TO USE, run the above Cron script commands as instructed. Three will be running.
 
 ## License
 
