@@ -2,13 +2,26 @@
 
 Scripts to enable a MultiConnect Conduit to act as a hub for the Plantalytics system data collection nodes.
 
-## Setup
+## What Each File does
+
+1. lora_client.py is a python program that uses MQTT to subscrible to "lora/+/+". It will print the data it recieves and add a timestamp.
+2. lora_checker.sh is a cron script to check if the lora_client.py is running.
+3. parse_data.py takes data_stream.txt lines and moves them to data_dump.txt for parsing of data and preparing data to send to backend API. Here are the steps:
+	1.  Load configs from secert config file. 
+	2.  Copy lines from data_stream.txt to data_dump.txt.
+	3.  Delete the successfully copied lines from the data_stream.txt.
+	4.  Decrypt thte data, parse the data, check if it is readable, then add to dictionary.
+	5.  Get batch ready for back-end.
+	6.  Keep sending the batch until back-end recieves the batch.
+4. data_generator.py is a test file. Testing if back-end can recieve static data batch. NOT NEEDED in final product.
+
+## Setting up the Conduit
 
 Setting up the Conduit is 9/10ths of the battle. The first step is to configure the network settings.
 
 Then:
 * Two opinions to set up Internet connection(Recommand opinon 2):
-  * 1.) Static(Add all lines into /etc/network/interfaces)
+  1. Static(Add all lines into /etc/network/interfaces)
     * Modify `address 192.168.2.1` to fit your wanted static ip-address for the conduit
     * Modify `netmask 255.255.255.0` to match netmask of your rounter
     * Add `gateway: ###.###.#.##` the address needs to be your rounter ip-address
@@ -16,7 +29,7 @@ Then:
     * Add `post-up echo "nameserver 8.8.8.8" > /etc/resolv.conf`
     * Save and quit. In command line `ifdown eth0 && ifup eth0` to have changes take effect
     * Ping a site to test internet connection
-  * 2.) DHCP(Edit lines into /etc/network/interfaces)
+  2. DHCP(Edit lines into /etc/network/interfaces)
     * Modity `iface eth0 inet static` into `iface eth0 inet dhcp`
     * Save and quit. In command line `ifdown eth0 && ifup eth0` to have changes take effect
     * Ping a site to test internet connection
@@ -29,8 +42,8 @@ Then:
     * Change "public": false to "public": true.
     * Comment out lines in "network". "name" and "passphrase".
     * Add lines "eui" and "key". Make sure they match the nodes eui and key:
-	* `"eui": "XX:XX:XX:XX:XX:XX:XX:XX",`
-	* `"key": "XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX"`
+	* `"eui": "XX:XX:XX:XX:XX:XX:XX:XX",` eui matches node's
+	* `"key": "XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX"` key matches node's
   * Restart the network server by executing:
 	* `/etc/init.d/lora-network-server restart`
   * To start the mosquitto client:
